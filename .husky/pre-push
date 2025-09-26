@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Checking branch name..."
+
+branch_name="$(git rev-parse --abbrev-ref HEAD)"
+
+# Allowed pattern: TICKET-ID/description (e.g., GEN-1234/awesome-feature)
+branch_regex="^([A-Z]+-[0-9]+)\/[a-z0-9._-]+$"
+
+if echo "$branch_name" | grep -Eq "$branch_regex"; then
+  echo "✅ Branch name is valid: $branch_name"
+else
+  echo "❌ Invalid branch name: $branch_name"
+  echo "📋 Required pattern: TICKET-ID/description"
+  echo "✨ Example: GEN-1234/add-user-endpoint"
+  exit 1
+fi
