@@ -3,14 +3,14 @@ import { execSync } from 'child_process';
 console.log('🌿 Verifying branch name format...');
 
 // Regex to enforce branch name pattern: feature/TICKET-ID-description or fix/TICKET-ID-description
-const branchRegex = /^(feature|fix|hotfix)\/([A-Z]+-\d+)-[a-z0-9-]+$/;
+const branchRegex = /^(?:feature|bugfix|hotfix|chore|fix|feat)\/(?:[A-Z]+-)?\d+([-_][A-Za-z]+)*$/i;
 
 try {
     // Get current branch name
     const branchName = execSync('git branch --show-current', { encoding: 'utf-8' }).trim();
     console.log(`📁 Current branch: "${branchName}"`);
 
-    // Skip validation for main/master branches
+    // Skip validation for main/master/develop branches
     if (['main', 'master', 'develop'].includes(branchName)) {
         console.log('✅ Main/master/develop branch detected - skipping validation.');
         process.exit(0);
@@ -23,10 +23,11 @@ try {
         console.error('✨ Examples:');
         console.error('   feature/GEN-1234-add-user-authentication');
         console.error('   fix/API-5678-fix-null-pointer-exception');
-        console.error('   hotfix/DB-9012-urgent-fix');
+        console.error('   hotfix/DB-9012-urgent_fix');
+        console.error('   bugfix/API-9012-FixNullPointer');
         console.error('');
-        console.error('Allowed types: feature, fix, hotfix');
-        console.error('Description should be lowercase with hyphens');
+        console.error('Allowed types: feature, bugfix, hotfix, chore, fix, feat');
+        console.error('Description can contain letters (uppercase or lowercase) and can use hyphens or underscores');
         process.exit(1);
     }
 
