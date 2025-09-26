@@ -5,6 +5,13 @@
         "@commitlint/cli": "^19.4.0"
     },
     "scripts": {
-        "prepare": "husky"
+        "prepare": "husky",
+        "verify-branch": "node scripts/verify-branch-name.js"
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "pnpm exec commitlint --edit $1",
+            "pre-push": "node scripts/verify-branch-name.js"
+        }
     }
 }
