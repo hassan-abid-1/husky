@@ -5,6 +5,12 @@
         "@commitlint/cli": "^19.4.0"
     },
     "scripts": {
-        "prepare": "husky"
+        "prepare": "husky",
+        "verify-branch": "node scripts/verify-branch-name.js"
+    },
+    "husky": {
+        "hooks": {
+            "pre-push": "node scripts/verify-branch-name.js"
+        }
     }
 }
