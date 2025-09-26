@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Checking branch name..."
+
+# Get current branch name
+current_branch=$(git branch --show-current)
+
+# Regex to enforce branch naming pattern: feature/TICKET-ID-description or fix/TICKET-ID-description
+branch_regex="^(feature|fix|hotfix|chore|docs)/[A-Z]+-\d+(-[a-z0-9]+)*$"
+
+# Allowed branches that bypass the check (main, master, develop, release branches)
+allowed_branches="^(main|master|develop|release/.*)$"
+
+# Check if current branch is in the allowed list
+if echo "$current_branch" | grep -E "$allowed_branches" > /dev/null; then
+  echo "✅ Allowed branch detected - skipping branch name validation."
+  exit 0
+fi
+
+# Check if the branch name matches the regex
+if ! echo "$current_branch" | grep -E "$branch_regex" > /dev/null; then
+  echo "❌ Invalid branch name format!"
+  echo "📋 Required pattern: type/TICKET-ID-description"
+  echo "✨ Examples:"
+  echo "   - feature/GEN-1234-add-user-authentication"
+  echo "   - fix/GEN-5678-resolve-login-issue"
+  echo "   - chore/GEN-9012-update-dependencies"
+  echo ""
+  echo "Allowed types: feature, fix, hotfix, chore, docs"
+  echo "Allowed main branches: main, master, develop, release/*"
+  exit 1
+fi
+
+echo "✅ Branch name format is valid!"

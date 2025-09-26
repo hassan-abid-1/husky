@@ -1,0 +1,10 @@
+{
+    "devDependencies": {
+        "husky": "^9.1.5",
+        "@commitlint/config-conventional": "^19.2.2",
+        "@commitlint/cli": "^19.4.0"
+    },
+    "scripts": {
+        "prepare": "husky"
+    }
+}
